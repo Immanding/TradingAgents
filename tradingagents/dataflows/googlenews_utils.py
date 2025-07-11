@@ -14,7 +14,7 @@ from tenacity import (
 
 
 def is_rate_limited(response):
-    """Check if the response indicates rate limiting (status code 429)"""
+    """检查响应是否表示速率限制（状态码429）"""
     return response.status_code == 429
 
 
@@ -24,8 +24,8 @@ def is_rate_limited(response):
     stop=stop_after_attempt(5),
 )
 def make_request(url, headers):
-    """Make a request with retry logic for rate limiting"""
-    # Random delay before each request to avoid detection
+    """使用重试逻辑进行请求以处理速率限制"""
+    # 在每次请求前随机延迟以避免被检测
     time.sleep(random.uniform(2, 6))
     response = requests.get(url, headers=headers)
     return response
@@ -69,7 +69,7 @@ def getNewsData(query, start_date, end_date):
             results_on_page = soup.select("div.SoaBEf")
 
             if not results_on_page:
-                break  # No more results found
+                break  # 没有找到更多结果
 
             for el in results_on_page:
                 try:
@@ -89,12 +89,12 @@ def getNewsData(query, start_date, end_date):
                     )
                 except Exception as e:
                     print(f"Error processing result: {e}")
-                    # If one of the fields is not found, skip this result
+                    # 如果找不到其中一个字段，跳过此结果
                     continue
 
-            # Update the progress bar with the current count of results scraped
+            # 用当前抓取的结果数量更新进度条
 
-            # Check for the "Next" link (pagination)
+            # 检查"下一页"链接（分页）
             next_link = soup.find("a", id="pnnext")
             if not next_link:
                 break

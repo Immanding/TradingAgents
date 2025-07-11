@@ -75,7 +75,7 @@ def fetch_top_from_category(
     )
 
     for data_file in os.listdir(os.path.join(base_path, category)):
-        # check if data_file is a .jsonl file
+        # 检查data_file是否为.jsonl文件
         if not data_file.endswith(".jsonl"):
             continue
 
@@ -83,20 +83,20 @@ def fetch_top_from_category(
 
         with open(os.path.join(base_path, category, data_file), "rb") as f:
             for i, line in enumerate(f):
-                # skip empty lines
+                # 跳过空行
                 if not line.strip():
                     continue
 
                 parsed_line = json.loads(line)
 
-                # select only lines that are from the date
+                # 只选择来自指定日期的行
                 post_date = datetime.utcfromtimestamp(
                     parsed_line["created_utc"]
                 ).strftime("%Y-%m-%d")
                 if post_date != date:
                     continue
 
-                # if is company_news, check that the title or the content has the company's name (query) mentioned
+                # 如果是company_news，检查标题或内容是否提到了公司名称（query）
                 if "company" in category and query:
                     search_terms = []
                     if "OR" in ticker_to_company[query]:
@@ -127,7 +127,7 @@ def fetch_top_from_category(
 
                 all_content_curr_subreddit.append(post)
 
-        # sort all_content_curr_subreddit by upvote_ratio in descending order
+        # 按点赞数降序排列all_content_curr_subreddit
         all_content_curr_subreddit.sort(key=lambda x: x["upvotes"], reverse=True)
 
         all_content.extend(all_content_curr_subreddit[:limit_per_subreddit])

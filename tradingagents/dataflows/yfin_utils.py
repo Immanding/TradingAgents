@@ -1,4 +1,4 @@
-# gets data/stats
+# 获取数据/统计信息
 
 import yfinance as yf
 from typing import Annotated, Callable, Any, Optional
@@ -10,7 +10,7 @@ from .utils import save_output, SavePathType, decorate_all_methods
 
 
 def init_ticker(func: Callable) -> Callable:
-    """Decorator to initialize yf.Ticker and pass it to the function."""
+    """装饰器，用于初始化yf.Ticker并将其传递给函数。"""
 
     @wraps(func)
     def wrapper(symbol: Annotated[str, "ticker symbol"], *args, **kwargs) -> Any:
@@ -35,7 +35,7 @@ class YFinanceUtils:
     ) -> DataFrame:
         """retrieve stock price data for designated ticker symbol"""
         ticker = symbol
-        # add one day to the end_date so that the data range is inclusive
+        # 在结束日期上加一天，使数据范围包含结束日期
         end_date = pd.to_datetime(end_date) + pd.DateOffset(days=1)
         end_date = end_date.strftime("%Y-%m-%d")
         stock_data = ticker.history(start=start_date, end=end_date)
@@ -105,12 +105,12 @@ class YFinanceUtils:
         ticker = symbol
         recommendations = ticker.recommendations
         if recommendations.empty:
-            return None, 0  # No recommendations available
+            return None, 0  # 没有可用的推荐
 
-        # Assuming 'period' column exists and needs to be excluded
-        row_0 = recommendations.iloc[0, 1:]  # Exclude 'period' column if necessary
+        # 假设存在'period'列需要被排除
+        row_0 = recommendations.iloc[0, 1:]  # 如有必要，排除'period'列
 
-        # Find the maximum voting result
+        # 找到最大投票结果
         max_votes = row_0.max()
         majority_voting_result = row_0[row_0 == max_votes].index.tolist()
 

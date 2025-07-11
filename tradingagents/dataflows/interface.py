@@ -160,25 +160,25 @@ def get_simfin_balance_sheet(
     )
     df = pd.read_csv(data_path, sep=";")
 
-    # Convert date strings to datetime objects and remove any time components
+    # 将日期字符串转换为datetime对象并移除任何时间组件
     df["Report Date"] = pd.to_datetime(df["Report Date"], utc=True).dt.normalize()
     df["Publish Date"] = pd.to_datetime(df["Publish Date"], utc=True).dt.normalize()
 
-    # Convert the current date to datetime and normalize
+    # 将当前日期转换为datetime并标准化
     curr_date_dt = pd.to_datetime(curr_date, utc=True).normalize()
 
-    # Filter the DataFrame for the given ticker and for reports that were published on or before the current date
+    # 过滤DataFrame以获取给定股票代码和在当前日期或之前发布的报告
     filtered_df = df[(df["Ticker"] == ticker) & (df["Publish Date"] <= curr_date_dt)]
 
-    # Check if there are any available reports; if not, return a notification
+    # 检查是否有可用的报告；如果没有，返回通知
     if filtered_df.empty:
         print("No balance sheet available before the given current date.")
         return ""
 
-    # Get the most recent balance sheet by selecting the row with the latest Publish Date
+    # 通过选择具有最新发布日期的行来获取最新的资产负债表
     latest_balance_sheet = filtered_df.loc[filtered_df["Publish Date"].idxmax()]
 
-    # drop the SimFinID column
+    # 删除SimFinID列
     latest_balance_sheet = latest_balance_sheet.drop("SimFinId")
 
     return (
@@ -207,25 +207,25 @@ def get_simfin_cashflow(
     )
     df = pd.read_csv(data_path, sep=";")
 
-    # Convert date strings to datetime objects and remove any time components
+    # 将日期字符串转换为datetime对象并移除任何时间组件
     df["Report Date"] = pd.to_datetime(df["Report Date"], utc=True).dt.normalize()
     df["Publish Date"] = pd.to_datetime(df["Publish Date"], utc=True).dt.normalize()
 
-    # Convert the current date to datetime and normalize
+    # 将当前日期转换为datetime并标准化
     curr_date_dt = pd.to_datetime(curr_date, utc=True).normalize()
 
-    # Filter the DataFrame for the given ticker and for reports that were published on or before the current date
+    # 过滤DataFrame以获取给定股票代码和在当前日期或之前发布的报告
     filtered_df = df[(df["Ticker"] == ticker) & (df["Publish Date"] <= curr_date_dt)]
 
-    # Check if there are any available reports; if not, return a notification
+    # 检查是否有可用的报告；如果没有，返回通知
     if filtered_df.empty:
         print("No cash flow statement available before the given current date.")
         return ""
 
-    # Get the most recent cash flow statement by selecting the row with the latest Publish Date
+    # 通过选择具有最新发布日期的行来获取最新的现金流量表
     latest_cash_flow = filtered_df.loc[filtered_df["Publish Date"].idxmax()]
 
-    # drop the SimFinID column
+    # 删除SimFinID列
     latest_cash_flow = latest_cash_flow.drop("SimFinId")
 
     return (

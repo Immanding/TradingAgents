@@ -8,15 +8,15 @@ DEFAULT_CONFIG = {
         os.path.abspath(os.path.join(os.path.dirname(__file__), ".")),
         "dataflows/data_cache",
     ),
-    # LLM settings
+    # LLM设置
     "llm_provider": "openai",
     "deep_think_llm": "o4-mini",
     "quick_think_llm": "gpt-4o-mini",
     "backend_url": "https://api.openai.com/v1",
-    # Debate and discussion settings
+    # 辩论和讨论设置
     "max_debate_rounds": 1,
     "max_risk_discuss_rounds": 1,
     "max_recur_limit": 100,
-    # Tool settings
+    # 工具设置
     "online_tools": True,
 }
